@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
+
+:root{
+    --bg-color: #A5B68D;
+    --primary-color: #ECDFCC;
+    --seconary-color: #FCFAEE;
+    --font: "Nunito", sans-serif;
+}
+
+body{
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+    font-family: var(--font);
+    height: 100vh;
+    margin: 0;
+}
+
+header{
+    background-color: var(--primary-color);
+    text-align: center;
+    color: var(--bg-color);
+}
+
+h1{
+    font-size: 2rem;
+    color: var(--bg-color);
+    font-weight: 700;
+}
+
+nav a{
+    text-decoration: none;
+    color: var(--bg-color);
+    margin: 0 2rem 1rem 0;
+}
