@@ -1,35 +1,20 @@
-import { obterDadosGlobais, titulo, obterCor } from './informacoesGlobais.js';
+const url = 'https://raw.githubusercontent.com/guilhermeonrails/api/main/dados-globais.json'
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const container = document.getElementById("graficos-container");
-    const dadosGlobais = await obterDadosGlobais();
+async function vizualizarInformacoesGlobais() {
+    const res = await fetch(url)
+    const dados = await res.json()
+    const pessoasConectadas = (dados.total_pessoas_conectadas / 1e9)
+    const pessoasNoMundo = (dados.total_pessoas_mundo / 1e9)
+    const horas = parseInt(dados.tempo_medio)
+    const minutos = Math.round((dados.tempo_medio - horas) * 100)
+    
+    const paragrafo = document.createElement('p')
+    paragrafo.classList.add('graficos-container__texto')
+    
+    paragrafo.innerHTML = `Você sabia que o mundo tem <span>${pessoasNoMundo} bilhões</span> de pessoas e que aproximadamente <span>${pessoasConectadas} bilhões</span> estão conectadas em alguma rede social e passam em média <span>${horas} horas</span> e <span>${minutos} minutos</span> conectadas.`
+    
+    const container = document.getElementById('graficos-container')
+    container.appendChild(paragrafo)
+}
 
-    if (dadosGlobais) {
-        const ctx = document.createElement("canvas");
-        container.appendChild(ctx);
-        
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ["Facebook", "Instagram", "Twitter"],
-                datasets: [{
-                    label: 'Engajamento',
-                    data: [dadosGlobais.facebook.engajamento, dadosGlobais.instagram.engajamento, dadosGlobais.twitter.engajamento],
-                    backgroundColor: obterCor("primaria"),
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Engajamento nas Redes Sociais'
-                    }
-                }
-            },
-        });
-    }
-});
+vizualizarInformacoesGlobais()
