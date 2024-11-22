@@ -1,14 +1,35 @@
-const url= 'https://raw.githubusercontent.com/guilhermeonrails/api/main/dados-globais.json'
+import { obterDadosGlobais, titulo, obterCor } from './informacoesGlobais.js';
 
-async function vizualizadorInformacoesGlobais(){
-const res=await fetch(url)
-const dados=await res.json()
-console.log(dados);
-const paragrafo=document.createElement('p')
-paragrafo.classList.add('graficos-container__texto')
-paragrafo.innerHTML=`vocẽ sabia que nomundo tem ${dados.total_de_pessoas_mundo} de pessoas que se aproximamde ${dados.total_de_pessoas_connectadas} estao conectadasem alguma rede social e passam em media ${dados.tempo_medio} horas conectadas.`
-console.log(paragrafo)
-const container=document.getElementById('graficos-container')
-container.appendChild(paragrafo)
-}
-vizualizadorInformacoesGlobais()
+document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("graficos-container");
+    const dadosGlobais = await obterDadosGlobais();
+
+    if (dadosGlobais) {
+        const ctx = document.createElement("canvas");
+        container.appendChild(ctx);
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Facebook", "Instagram", "Twitter"],
+                datasets: [{
+                    label: 'Engajamento',
+                    data: [dadosGlobais.facebook.engajamento, dadosGlobais.instagram.engajamento, dadosGlobais.twitter.engajamento],
+                    backgroundColor: obterCor("primaria"),
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Engajamento nas Redes Sociais'
+                    }
+                }
+            },
+        });
+    }
+});
